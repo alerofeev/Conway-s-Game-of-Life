@@ -8,7 +8,7 @@
 #include "cell.h"
 #include "engine.h"
 
-namespace cgl
+namespace cr
 {
 	class game_controller
 	{

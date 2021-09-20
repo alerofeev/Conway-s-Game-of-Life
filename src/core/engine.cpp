@@ -1,10 +1,10 @@
 #include "engine.h"
 
-cgl::engine::engine(const int i, const int j)
+cr::engine::engine(const int i, const int j)
 	: current_state_(std::vector<std::vector<bool>>(i, std::vector<bool>(j, false)))
 { }
 
-void cgl::engine::make_step()
+void cr::engine::make_step()
 {
 	next_state_ = current_state_;
 	for (size_t i = 0; i < current_state_.size(); i++)
@@ -17,17 +17,17 @@ void cgl::engine::make_step()
 	current_state_ = next_state_;
 }
 
-void cgl::engine::set_state_status(const int i, const int j, bool status)
+void cr::engine::set_state_status(const int i, const int j, bool status)
 {
 	current_state_[i][j] = status;
 }
 
-bool cgl::engine::get_state_status(const int i, const int j) const
+bool cr::engine::get_state_status(const int i, const int j) const
 {
 	return current_state_[i][j];
 }
 
-void cgl::engine::check_neighbors(const int i, const int j)
+void cr::engine::check_neighbors(const int i, const int j)
 {
 	int neighbors_counter = 0;
 	for (auto& position : neighbors_position_)

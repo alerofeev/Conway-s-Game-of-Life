@@ -1,6 +1,6 @@
 #include "game_controller.h"
 
-cgl::game_controller::game_controller(sf::RenderWindow& window) : window_(window)
+cr::game_controller::game_controller(sf::RenderWindow& window) : window_(window)
 {
 	load_font("back_to_1982", "backto1982");
 	load_font("roboto_regular", "roboto-regular");
@@ -17,24 +17,8 @@ cgl::game_controller::game_controller(sf::RenderWindow& window) : window_(window
 	}
 }
 
-void cgl::game_controller::start()
+void cr::game_controller::start()
 {
-	engine_.set_state_status(2, 10, true);
-	engine_.set_state_status(3, 11, true);
-	engine_.set_state_status(2, 12, true);
-	engine_.set_state_status(3, 12, true);
-	engine_.set_state_status(1, 11, true);
-
-	engine_.set_state_status(4, 15, true);
-	engine_.set_state_status(4, 16, true);
-	engine_.set_state_status(4, 17, true);
-
-	engine_.set_state_status(6, 2, true);
-	engine_.set_state_status(6, 3, true);
-	engine_.set_state_status(6, 4, true);
-	engine_.set_state_status(5, 4, true);
-	engine_.set_state_status(4, 3, true);
-
 	while (window_.isOpen())
 	{
 		sf::Event event{};
@@ -54,7 +38,7 @@ void cgl::game_controller::start()
 }
 
 
-void cgl::game_controller::draw_grid()
+void cr::game_controller::draw_grid()
 {
 	for (int i = 0; i < cells_.size(); i++)
 	{
@@ -90,7 +74,7 @@ void cgl::game_controller::draw_grid()
 }
 
 
-void cgl::game_controller::load_font(const std::string& key, const std::string& font_name)
+void cr::game_controller::load_font(const std::string& key, const std::string& font_name)
 {
 	sf::Font font;
 	if (font.loadFromFile("fonts/" + font_name + ".ttf"))
@@ -103,7 +87,7 @@ void cgl::game_controller::load_font(const std::string& key, const std::string& 
 	}
 }
 
-void cgl::game_controller::setup_window() const
+void cr::game_controller::setup_window() const
 {
 	window_.clear(BACKGROUND_COLOR);
 

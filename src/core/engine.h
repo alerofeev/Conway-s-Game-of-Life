@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-namespace cgl
+namespace cr
 {
 	class engine
 	{
