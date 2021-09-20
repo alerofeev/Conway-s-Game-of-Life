@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "cell.h"
+#include "../ui/cell.h"
 #include "engine.h"
 
 namespace cr
@@ -25,7 +25,7 @@ namespace cr
 
 		sf::RenderWindow& window_;
 		std::map<std::string, sf::Font> fonts_;
-		std::vector<std::vector<cell>> cells_;
+		std::vector<std::vector<ui::cell>> cells_;
 		engine engine_ = engine(25, 38);
 	};
 }

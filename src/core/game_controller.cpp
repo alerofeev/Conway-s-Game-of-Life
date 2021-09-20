@@ -7,7 +7,7 @@ cr::game_controller::game_controller(sf::RenderWindow& window) : window_(window)
 
 	for (int i = 0; i < 25; i++)
 	{
-		std::vector<cell> temp;
+		std::vector<ui::cell> temp;
 		temp.reserve(38);
 		for (int j = 0; j < 38; j++)
 		{
@@ -36,7 +36,6 @@ void cr::game_controller::start()
 		window_.display();
 	}
 }
-
 
 void cr::game_controller::draw_grid()
 {
