@@ -1,6 +1,6 @@
 #include "game_controller.h"
 
-cr::game_controller::game_controller(sf::RenderWindow& window) : window_(window)
+cr::game_controller::game_controller(sf::RenderWindow& window) : window_(window), delay_(std::chrono::milliseconds(50))
 {
 	load_font("back_to_1982", "backto1982");
 	load_font("roboto_regular", "roboto-regular");
@@ -67,7 +67,7 @@ void cr::game_controller::draw_grid()
 	std::thread engine_thread([this]()
 	{
 		engine_.make_step();
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		std::this_thread::sleep_for(std::chrono::milliseconds(delay_));
 	});
 	engine_thread.join();
 }
@@ -98,4 +98,14 @@ void cr::game_controller::setup_window() const
 	game_logo.setLineSpacing(1.2f);
 	game_logo.setPosition(980, 35);
 	window_.draw(game_logo);
+
+	sf::Text speed_picker_label;
+	speed_picker_label.setFillColor(sf::Color(204, 204, 204));
+	speed_picker_label.setFont(fonts_.find("roboto_regular")->second);
+	speed_picker_label.setString("Speed:");
+	speed_picker_label.setCharacterSize(16);
+	speed_picker_label.setPosition(36, 650);
+	window_.draw(speed_picker_label);
+
+
 }
