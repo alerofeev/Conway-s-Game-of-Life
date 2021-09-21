@@ -1,6 +1,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "core/game_controller.h"
+#include "core/game_controller.hpp"
 
 int main()
 {

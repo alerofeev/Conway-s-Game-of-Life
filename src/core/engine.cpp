@@ -1,4 +1,4 @@
-#include "engine.h"
+#include "engine.hpp"
 
 cr::engine::engine(const int i, const int j)
 	: current_state_(std::vector<std::vector<bool>>(i, std::vector<bool>(j, false)))

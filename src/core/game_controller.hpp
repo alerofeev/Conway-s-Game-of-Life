@@ -5,9 +5,8 @@
 #include <vector>
 #include <string>
 #include <SFML/Graphics.hpp>
-#include "../ui/cell.h"
-#include "../ui/button.h"
-#include "engine.h"
+#include "../ui/cell.hpp"
+#include "engine.hpp"
 
 namespace cr
 {
@@ -24,10 +23,10 @@ namespace cr
 
 		const sf::Color BACKGROUND_COLOR = sf::Color(38, 38, 38, 0);
 
-		sf::RenderWindow& window_;
-		std::map<std::string, sf::Font> fonts_;
 		std::vector<std::vector<ui::cell>> cells_;
-		engine engine_ = engine(25, 38);
 		std::chrono::milliseconds delay_;
+		engine engine_ = engine(25, 38);
+		std::map<std::string, sf::Font> fonts_;
+		sf::RenderWindow& window_;
 	};
 }

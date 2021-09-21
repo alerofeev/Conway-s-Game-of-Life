@@ -149,10 +149,10 @@
     <ClCompile Include="ui\cell.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\engine.h" />
-    <ClInclude Include="core\game_controller.h" />
-    <ClInclude Include="ui\button.h" />
-    <ClInclude Include="ui\cell.h" />
+    <ClInclude Include="core\engine.hpp" />
+    <ClInclude Include="core\game_controller.hpp" />
+    <ClInclude Include="ui\button.hpp" />
+    <ClInclude Include="ui\cell.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

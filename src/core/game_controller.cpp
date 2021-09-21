@@ -1,6 +1,6 @@
-#include "game_controller.h"
+#include "game_controller.hpp"
 
-cr::game_controller::game_controller(sf::RenderWindow& window) : window_(window), delay_(std::chrono::milliseconds(50))
+cr::game_controller::game_controller(sf::RenderWindow& window) : delay_(std::chrono::milliseconds(500)), window_(window)
 {
 	load_font("back_to_1982", "backto1982");
 	load_font("roboto_regular", "roboto-regular");
@@ -11,7 +11,7 @@ cr::game_controller::game_controller(sf::RenderWindow& window) : window_(window)
 		temp.reserve(38);
 		for (int j = 0; j < 38; j++)
 		{
-			temp.emplace_back(window_);
+			temp.emplace_back();
 		}
 		cells_.push_back(temp);
 	}
@@ -19,6 +19,12 @@ cr::game_controller::game_controller(sf::RenderWindow& window) : window_(window)
 
 void cr::game_controller::start()
 {
+	engine_.set_state_status(6, 15, true);
+	engine_.set_state_status(6, 14, true);
+	engine_.set_state_status(5, 13, true);
+	engine_.set_state_status(5, 15, true);
+	engine_.set_state_status(4, 15, true);
+
 	while (window_.isOpen())
 	{
 		sf::Event event{};
@@ -44,7 +50,7 @@ void cr::game_controller::draw_grid()
 		for (int j = 0; j < cells_[i].size(); j++)
 		{
 			cells_[i][j].set_status(engine_.get_state_status(i, j));
-			cells_[i][j].draw(static_cast<float>(36 + j * 24), static_cast<float>(36 + i * 24));
+			cells_[i][j].draw(window_, static_cast<float>(36 + j * 24), static_cast<float>(36 + i * 24));
 		}
 	}
 
@@ -106,6 +112,5 @@ void cr::game_controller::setup_window() const
 	speed_picker_label.setCharacterSize(16);
 	speed_picker_label.setPosition(36, 650);
 	window_.draw(speed_picker_label);
-
 
 }
