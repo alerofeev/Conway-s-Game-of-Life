@@ -15,3 +15,8 @@ void ui::cell::draw(sf::RenderWindow& window, const float x_position, const floa
 	cell_shape_.setPosition(x_position, y_position);
 	window.draw(cell_shape_);
 }
+
+bool ui::cell::is_mouse_over(const sf::RenderWindow& window) const
+{
+	return cell_shape_.getGlobalBounds().contains(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+}

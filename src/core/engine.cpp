@@ -15,6 +15,19 @@ void cr::engine::make_step()
 		}
 	}
 	current_state_ = next_state_;
+	step_counter_++;
+}
+
+void cr::engine::clear_state()
+{
+	for (size_t i = 0; i < current_state_.size(); i++)
+	{
+		for (size_t j = 0; j < current_state_[i].size(); j++)
+		{
+			current_state_[i][j] = false;
+		}
+	}
+	step_counter_ = 0;
 }
 
 void cr::engine::set_state_status(const int i, const int j, bool status)
@@ -26,6 +39,12 @@ bool cr::engine::get_state_status(const int i, const int j) const
 {
 	return current_state_[i][j];
 }
+
+int cr::engine::get_step_count() const
+{
+	return step_counter_;
+}
+
 
 void cr::engine::check_neighbors(const int i, const int j)
 {
