@@ -16,23 +16,26 @@ namespace cr
 	class game_controller
 	{
 	public:
-		game_controller(sf::RenderWindow&, int, int);
+		game_controller(sf::RenderWindow&, int, int, int);
 		void start();
 
 	private:
 		static void initialize_text(sf::Text&, sf::Color, const sf::Font&, const std::string&, int, float, float, float);
 		void draw_grid();
+		void draw_controls();
+		void draw_cells();
 		void load_font(const std::string&, const std::string&);
 		void change_delay(int, int);
-		void setup_window();
 		void make_step(const std::atomic<bool>&);
 
 		const sf::Color BACKGROUND_COLOR = sf::Color(38, 38, 38, 0);
+		const sf::Color TEXT_COLOR = sf::Color(204, 204, 204);
+		const sf::Color TEXT_COLOR_GREEN = sf::Color(50, 168, 82);
 
 		std::atomic<int> delay_;
+		int cell_size_;
 		int rows_;
 		int columns_;
-		// std::atomic<engine> engine_;
 		engine engine_;
 
 		std::map<std::string, sf::Font> fonts_;

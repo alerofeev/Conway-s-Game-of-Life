@@ -1,6 +1,6 @@
 #include "cell.hpp"
 
-ui::cell::cell()
+ui::cell::cell(const float cell_size) :cell_shape_(sf::RectangleShape(sf::Vector2f(cell_size, cell_size)))
 {
 	cell_shape_.setFillColor(sf::Color::Transparent);
 }
