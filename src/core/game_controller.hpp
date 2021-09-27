@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <thread>
+#include <atomic>
 #include <chrono>
 #include <vector>
 #include <map>
@@ -19,13 +20,19 @@ namespace cr
 		void start();
 
 	private:
-		void draw_grid(bool);
+		static void initialize_text(sf::Text&, sf::Color, const sf::Font&, const std::string&, int, float, float, float);
+		void draw_grid();
 		void load_font(const std::string&, const std::string&);
+		void change_delay(int, int);
 		void setup_window();
+		void make_step(const std::atomic<bool>&);
 
 		const sf::Color BACKGROUND_COLOR = sf::Color(38, 38, 38, 0);
 
-		std::chrono::milliseconds delay_;
+		std::atomic<int> delay_;
+		int rows_;
+		int columns_;
+		// std::atomic<engine> engine_;
 		engine engine_;
 
 		std::map<std::string, sf::Font> fonts_;
@@ -40,8 +47,5 @@ namespace cr
 		ui::button start_game_button_;
 		ui::button clear_field_button_;
 		ui::button exit_button_;
-
-		int rows_;
-		int columns_;
 	};
 }
