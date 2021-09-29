@@ -3,8 +3,8 @@
 cr::game_controller::game_controller(sf::RenderWindow& window, const int rows, const int columns, const int cell_size)
 	: delay_(400), cell_size_(cell_size), rows_(rows), columns_(columns), engine_(engine(rows, columns)), window_(window)
 {
-	load_font("back_to_1982", "backto1982");
-	load_font("roboto_regular", "roboto-regular");
+	set_font("back_to_1982", "backto1982");
+	set_font("roboto_regular", "roboto-regular");
 
 	start_game_button_ = ui::button("Start Game", fonts_.find("roboto_regular")->second, 18, 2.8f, sf::Vector2f(273.f, 50.f), 984.f, 130.f);
 	clear_field_button_ = ui::button("Clear Field", fonts_.find("roboto_regular")->second, 18, 2.8f, sf::Vector2f(273.f, 50.f), 984.f, 200.f);
@@ -16,14 +16,11 @@ cr::game_controller::game_controller(sf::RenderWindow& window, const int rows, c
 
 	speed_buttons_[0].set_hovered_state();
 
-	initialize_text(game_logo_text_, TEXT_COLOR, fonts_.find("back_to_1982")->second, 
-		"   Conway's\nGame of Life", 28, 1.2f, 984, 36);
+	initialize_text(game_logo_text_, TEXT_COLOR, fonts_.find("back_to_1982")->second, "   Conway's\nGame of Life", 28, 1.2f, 984, 36);
 	initialize_text(generation_label_, TEXT_COLOR, fonts_.find("roboto_regular")->second,
-		"Generation:", 18, 0.f, 329, 36);
-	initialize_text(generation_number_, TEXT_COLOR_GREEN, fonts_.find("roboto_regular")->second,
-		"0", 18, 0.f, 427, 36);
-	initialize_text(speed_picker_label_, TEXT_COLOR, fonts_.find("roboto_regular")->second,
-		"Speed:", 18, 0.f, 36, 36);
+		"Generation:", 18, 0, 329, 36);
+	initialize_text(generation_number_, TEXT_COLOR_GREEN, fonts_.find("roboto_regular")->second,"0", 18, 0, 427, 36);
+	initialize_text(speed_picker_label_, TEXT_COLOR, fonts_.find("roboto_regular")->second,"Speed:", 18, 0, 36, 36);
 
 	for (int i = 0; i < rows_; i++)
 	{
@@ -61,10 +58,9 @@ void cr::game_controller::start()
 					{
 						if (start_game_button_.is_mouse_over(sf::Mouse::getPosition(window_)))
 						{
-							is_game_running ? is_game_running = false : is_game_running = true;
-							is_game_running ? start_game_button_.set_label("Stop Game") : start_game_button_.set_label("Continue Game");
 							is_grid_editable = false;
-							break;
+							is_game_running = is_game_running ? false : true;
+							start_game_button_.set_label(is_game_running ? "Pause Game" : "Continue Game");
 						}
 						if (clear_field_button_.is_mouse_over(sf::Mouse::getPosition(window_)))
 						{
@@ -73,46 +69,31 @@ void cr::game_controller::start()
 							engine_.clear_state();
 							generation_number_.setString("0");
 							start_game_button_.set_label("Start Game");
-							break;
 						}
 						if (exit_button_.is_mouse_over(sf::Mouse::getPosition(window_)))
 						{
 							window_.close();
 							engine_thread.join();
-							break;
 						}
-						if (speed_buttons_[0].is_mouse_over(sf::Mouse::getPosition(window_)))
-						{
-							change_delay(0, 400);
-							break;
-						}
-						if (speed_buttons_[1].is_mouse_over(sf::Mouse::getPosition(window_)))
-						{
-							change_delay(1, 200);
-							break;
-						}
-						if (speed_buttons_[2].is_mouse_over(sf::Mouse::getPosition(window_)))
-						{
-							change_delay(2, 100);
-							break;
-						}
-						if (!is_game_running && is_grid_editable)
-						{
-							draw_cells();
-						}
-					}
-					break;
-				}
-				case sf::Event::MouseMoved:
-				{
-					if (!is_game_running && is_grid_editable && sf::Mouse::isButtonPressed(sf::Mouse::Left))
-					{
-						draw_cells();
+						set_delay(0, 400);
+						set_delay(1, 200);
+						set_delay(2, 100);
 					}
 					break;
 				}
 				default:
 					break;
+			}
+		}
+		if (!is_game_running && is_grid_editable)
+		{
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				set_cells_status(1);
+			}
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+			{
+				set_cells_status(0);
 			}
 		}
 		draw_controls();
@@ -121,7 +102,7 @@ void cr::game_controller::start()
 	}
 }
 
-void cr::game_controller::initialize_text(sf::Text& text, const sf::Color color, const sf::Font& font, const std::string& title, 
+void cr::game_controller::initialize_text(sf::Text& text, const sf::Color color, const sf::Font& font, const std::string& title,
 	const int character_size, const float line_spacing, const float x_position, const float y_position)
 {
 	text.setFillColor(color);
@@ -143,7 +124,7 @@ void cr::game_controller::draw_grid()
 		}
 	}
 
-	sf::RectangleShape vertical_line(sf::Vector2f(2.f, 602.f));
+	sf::RectangleShape vertical_line(sf::Vector2f(1.f, 601.f));
 	vertical_line.setFillColor(sf::Color(204, 204, 204));
 	for (auto i = 0; i <= rows_; i++)
 	{
@@ -151,35 +132,13 @@ void cr::game_controller::draw_grid()
 		window_.draw(vertical_line);
 	}
 
-	sf::RectangleShape horizontal_line(sf::Vector2f(914.f, 2.f));
+	sf::RectangleShape horizontal_line(sf::Vector2f(913.f, 1.f));
 	horizontal_line.setFillColor(sf::Color(204, 204, 204));
 	for (auto i = 0; i <= columns_; i++)
 	{
 		horizontal_line.setPosition(36, static_cast<float>(72 + i * cell_size_));
 		window_.draw(horizontal_line);
 	}
-}
-
-void cr::game_controller::load_font(const std::string& key, const std::string& font_name)
-{
-	sf::Font font;
-	if (font.loadFromFile("fonts/" + font_name + ".ttf"))
-	{
-		fonts_.insert(std::pair<std::string, sf::Font>(key, font));
-	}
-	else
-	{
-		std::cout << "Can't load font \"" + font_name + ".ttf\"" << std::endl;
-	}
-}
-
-void cr::game_controller::change_delay(const int element_id, const int delay)
-{
-	for (int i = 0; i < 3; i++)
-	{
-		i == element_id ? speed_buttons_[i].set_hovered_state() : speed_buttons_[i].set_normal_state();
-	}
-	delay_ = delay;
 }
 
 void cr::game_controller::draw_controls()
@@ -212,18 +171,46 @@ void cr::game_controller::draw_controls()
 	window_.draw(generation_number_);
 }
 
-void cr::game_controller::draw_cells()
+void cr::game_controller::set_font(const std::string& key, const std::string& font_name)
 {
+	sf::Font font;
+	if (font.loadFromFile("fonts/" + font_name + ".ttf"))
+	{
+		fonts_.insert(std::pair<std::string, sf::Font>(key, font));
+	}
+	else
+	{
+		std::cout << "Can't load font \"" + font_name + ".ttf\"" << std::endl;
+	}
+}
+
+void cr::game_controller::set_delay(const int element_id, const int delay)
+{
+	if (speed_buttons_[element_id].is_mouse_over(sf::Mouse::getPosition(window_)))
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			i == element_id ? speed_buttons_[i].set_hovered_state() : speed_buttons_[i].set_normal_state();
+		}
+		delay_ = delay;
+	}
+}
+
+void cr::game_controller::set_cells_status(const char status)
+{
+
+
 	for (int i = 0; i < rows_; i++)
 	{
 		for (int j = 0; j < columns_; j++)
 		{
 			if (cells_[i][j].is_mouse_over(window_))
 			{
-				engine_.set_state_status(i, j, 1);
+				engine_.set_state_status(i, j, status);
 			}
 		}
 	}
+
 }
 
 void cr::game_controller::make_step(const std::atomic<bool>& is_game_started)

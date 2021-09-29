@@ -23,12 +23,12 @@ namespace cr
 		static void initialize_text(sf::Text&, sf::Color, const sf::Font&, const std::string&, int, float, float, float);
 		void draw_grid();
 		void draw_controls();
-		void draw_cells();
-		void load_font(const std::string&, const std::string&);
-		void change_delay(int, int);
+		void set_cells_status(char);
+		void set_font(const std::string&, const std::string&);
+		void set_delay(int, int);
 		void make_step(const std::atomic<bool>&);
 
-		const sf::Color BACKGROUND_COLOR = sf::Color(38, 38, 38, 0);
+		const sf::Color BACKGROUND_COLOR = sf::Color(10, 10, 10, 0);
 		const sf::Color TEXT_COLOR = sf::Color(204, 204, 204);
 		const sf::Color TEXT_COLOR_GREEN = sf::Color(50, 168, 82);
 

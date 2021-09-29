@@ -35,7 +35,6 @@ void ui::button::set_label(const std::string& title)
 void ui::button::set_normal_state()
 {
 	state_ = state::normal;
-
 	second_outline_.setOutlineColor(sf::Color::Transparent);
 	second_outline_.setSize(sf::Vector2f(button_shape_.getSize().x + 8, button_shape_.getSize().y + 8));
 	second_outline_.setPosition(button_shape_.getPosition().x - 4, button_shape_.getPosition().y - 4);
@@ -62,7 +61,6 @@ void ui::button::update(const sf::Vector2i mouse_position)
 			state_ = state::pressed;
 		}
 	}
-
 	switch (state_)
 	{
 		case state::normal:
@@ -87,7 +85,6 @@ void ui::button::update(const sf::Vector2i mouse_position)
 		default:
 			break;
 	}
-
 	state_ = state::normal;
 }
 

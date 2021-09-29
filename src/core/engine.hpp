@@ -12,9 +12,10 @@ namespace cr
 		engine(const engine&);
 		void make_step();
 		void clear_state();
-		void set_state_status(int, int, int);
+		void set_state_status(int, int, char);
 		bool get_state_status(int, int) const;
 		int get_step_count() const;
+		bool is_game_over();
 
 	private:
 		void check_neighbors(int, int);

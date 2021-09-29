@@ -15,7 +15,7 @@ namespace ui
 
 	private:
 		const sf::Color ALIVE_CELL_COLOR = sf::Color(50, 168, 82);
-		const sf::Color DEAD_CELL_COLOR = sf::Color(38, 38, 38);
+		const sf::Color DEAD_CELL_COLOR = sf::Color(10, 10, 10);
 
 		sf::RectangleShape cell_shape_;
 	};

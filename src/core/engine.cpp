@@ -25,17 +25,17 @@ void cr::engine::make_step()
 
 void cr::engine::clear_state()
 {
-	for (size_t i = 0; i < current_state_.size(); i++)
+	for (auto& i : current_state_)
 	{
-		for (size_t j = 0; j < current_state_[i].size(); j++)
+		for (char& j : i)
 		{
-			current_state_[i][j] = 0;
+			j = 0;
 		}
 	}
 	step_counter_ = 0;
 }
 
-void cr::engine::set_state_status(const int i, const int j, const int status)
+void cr::engine::set_state_status(const int i, const int j, const char status)
 {
 	current_state_[i][j] = status;
 }
@@ -48,6 +48,21 @@ bool cr::engine::get_state_status(const int i, const int j) const
 int cr::engine::get_step_count() const
 {
 	return step_counter_;
+}
+
+bool cr::engine::is_game_over()
+{
+	for (auto& i : current_state_)
+	{
+		for (size_t j = 0; j < current_state_.size(); j++)
+		{
+			if (i[j] == 1)
+			{
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 void cr::engine::check_neighbors(const int i, const int j)
