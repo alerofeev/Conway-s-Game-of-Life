@@ -30,9 +30,9 @@ namespace ca
 			return current_state_;
 		}
 
-		void set_cell_state(const int i, const int j, const char state)
+		void set_cell_state(const int i, const int j, const bool state)
 		{
-			current_state_[i][j] = state;
+			current_state_[i][j] = state ? 1 : 0;
 		}
 
 	private:
@@ -62,27 +62,42 @@ namespace ca
 }
 
 
+
 int main()
 {
-	constexpr int rows_counter = 100, columns_counter = 100;
-	constexpr int steps_counter = 600;
+	constexpr int rows_counter = 20, columns_counter = 20; // размерность игрового поля
+	constexpr int steps_counter = 600; // количество итераций
 
 	ca::cellular_automaton cellular_automaton(rows_counter, columns_counter);
 
-	cellular_automaton.set_cell_state(4, 6, 1);
-	cellular_automaton.set_cell_state(4, 7, 1);
-	cellular_automaton.set_cell_state(5, 5, 1);
-	cellular_automaton.set_cell_state(5, 6, 1);
-	cellular_automaton.set_cell_state(6, 6, 1);
-	
-	const auto start = std::chrono::high_resolution_clock::now();
-	for (int iterator = 0; iterator < steps_counter; iterator++)
+	// начальная конфигурация
+	cellular_automaton.set_cell_state(4, 6, true);
+	cellular_automaton.set_cell_state(5, 7, true);
+	cellular_automaton.set_cell_state(6, 5, true);
+	cellular_automaton.set_cell_state(5, 6, true);
+	cellular_automaton.set_cell_state(6, 6, true);
+
+	for (int i = 0; i < steps_counter; i++)
 	{
 		cellular_automaton.make_step();
 	}
-	const auto end = std::chrono::high_resolution_clock::now();
-
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms" << std::endl;
 
 	return EXIT_SUCCESS;
 }
+
+/*
+	const auto start = std::chrono::high_resolution_clock::now();
+	const auto end = std::chrono::high_resolution_clock::now();
+	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms" << std::endl;
+	
+		for (const auto& row : cellular_automaton.get_current_state())
+		{
+			for (const auto column : row)
+			{
+				std::cout << (column == 1 ? '#' : '*') << " ";
+			}
+			std::cout << std::endl;
+		}
+		getchar();
+		system("cls");
+ */
