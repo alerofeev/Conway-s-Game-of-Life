@@ -61,24 +61,41 @@ namespace ca
 	};
 }
 
-
+void print_field(ca::cellular_automaton cellular_automaton)
+{
+	for (const auto& row : cellular_automaton.get_current_state())
+	{
+		for (const auto column : row)
+		{
+			std::cout << (column == 1 ? '#' : '*') << " ";
+		}
+		std::cout << std::endl;
+	}
+	getchar();
+	system("cls");
+}
 
 int main()
 {
-	constexpr int rows_counter = 20, columns_counter = 20; // размерность игрового поля
+	constexpr int rows_counter = 10, columns_counter = 10; // размерность игрового поля
 	constexpr int steps_counter = 600; // количество итераций
 
 	ca::cellular_automaton cellular_automaton(rows_counter, columns_counter);
 
 	// начальная конфигурация
+	/*
 	cellular_automaton.set_cell_state(4, 6, true);
 	cellular_automaton.set_cell_state(5, 7, true);
 	cellular_automaton.set_cell_state(6, 5, true);
 	cellular_automaton.set_cell_state(5, 6, true);
 	cellular_automaton.set_cell_state(6, 6, true);
+	*/
+
+
 
 	for (int i = 0; i < steps_counter; i++)
 	{
+		print_field(cellular_automaton);
 		cellular_automaton.make_step();
 	}
 
