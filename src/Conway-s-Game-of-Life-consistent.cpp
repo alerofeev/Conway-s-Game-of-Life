@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <omp.h>
 
 namespace ca
 {
@@ -15,11 +16,14 @@ namespace ca
 		void make_step()
 		{
 			next_state_ = current_state_;
-			for (size_t i = 0; i < current_state_.size(); i++)
+			int i = 0, j = 0;
+			#pragma omp parallel for private(i)
+			for (i = 0; i < current_state_.size(); i++)
 			{
-				for (size_t j = 0; j < current_state_[0].size(); j++)
+				#pragma omp parallel for private(j)
+				for (j = 0; j < current_state_[0].size(); j++)
 				{
-					set_cell_state(static_cast<int>(i), static_cast<int>(j));
+					set_cell_state(i, j);
 				}
 			}
 			current_state_ = next_state_;
@@ -91,6 +95,11 @@ int main()
 	cellular_automaton.set_cell_state(6, 6, true);
 	*/
 
+	cellular_automaton.set_cell_state(1, 0, true);
+	cellular_automaton.set_cell_state(2, 1, true);
+	cellular_automaton.set_cell_state(2, 2, true);
+	cellular_automaton.set_cell_state(1, 2, true);
+	cellular_automaton.set_cell_state(0, 2, true);
 
 
 	for (int i = 0; i < steps_counter; i++)
