@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <thread>
-#include <omp.h>
+#include <random>
 
 namespace ca
 {
@@ -16,17 +16,31 @@ namespace ca
 		void make_step()
 		{
 			next_state_ = current_state_;
-			int i = 0, j = 0;
-			#pragma omp parallel for private(i)
-			for (i = 0; i < current_state_.size(); i++)
+			#pragma omp parallel for
+			for (int i = 0; i < current_state_.size(); i++)
 			{
-				#pragma omp parallel for private(j)
-				for (j = 0; j < current_state_[0].size(); j++)
+				#pragma omp parallel for 
+				for (int j = 0; j < current_state_[0].size(); j++)
 				{
 					set_cell_state(i, j);
 				}
 			}
 			current_state_ = next_state_;
+		}
+
+		void set_initial_state()
+		{
+			std::random_device device;
+			std::mt19937 generator(device());
+			const std::uniform_int_distribution<int> distribution(0, 100);
+			for (int i = 0; i < current_state_.size(); i++)
+			{
+				for (int j = 0; j < current_state_[0].size(); j++)
+				{
+					current_state_[i][j] = distribution(device) % 2 ? 1 : 0;
+				}
+			}
+
 		}
 
 		std::vector<std::vector<char>> get_current_state()
@@ -75,46 +89,45 @@ void print_field(ca::cellular_automaton cellular_automaton)
 		}
 		std::cout << std::endl;
 	}
-	getchar();
-	system("cls");
 }
 
 int main()
 {
-	constexpr int rows_counter = 10, columns_counter = 10; // размерность игрового поля
-	constexpr int steps_counter = 600; // количество итераций
+	constexpr int rows_counter = 20, columns_counter = 20; // размерность игрового поля
 
 	ca::cellular_automaton cellular_automaton(rows_counter, columns_counter);
+	cellular_automaton.set_initial_state();
 
 	// начальная конфигурация
-	/*
-	cellular_automaton.set_cell_state(4, 6, true);
-	cellular_automaton.set_cell_state(5, 7, true);
-	cellular_automaton.set_cell_state(6, 5, true);
-	cellular_automaton.set_cell_state(5, 6, true);
-	cellular_automaton.set_cell_state(6, 6, true);
-	*/
+	//cellular_automaton.set_cell_state(4, 6, true);
+	//cellular_automaton.set_cell_state(5, 7, true);
+	//cellular_automaton.set_cell_state(6, 5, true);
+	//cellular_automaton.set_cell_state(5, 6, true);
+	//cellular_automaton.set_cell_state(6, 6, true);
 
-	cellular_automaton.set_cell_state(1, 0, true);
-	cellular_automaton.set_cell_state(2, 1, true);
-	cellular_automaton.set_cell_state(2, 2, true);
-	cellular_automaton.set_cell_state(1, 2, true);
-	cellular_automaton.set_cell_state(0, 2, true);
-
-
-	for (int i = 0; i < steps_counter; i++)
+	while (true)
 	{
+		system("cls");
 		print_field(cellular_automaton);
+		//const auto start = std::chrono::high_resolution_clock::now();
 		cellular_automaton.make_step();
+		//const auto end = std::chrono::high_resolution_clock::now();
+		//std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms" << std::endl;
+		if (getchar() == 'q')
+		{
+			break;
+		}
 	}
 
 	return EXIT_SUCCESS;
 }
 
 /*
-	const auto start = std::chrono::high_resolution_clock::now();
-	const auto end = std::chrono::high_resolution_clock::now();
-	std::cout << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "ms" << std::endl;
+		cellular_automaton.set_cell_state(1, 0, true);
+	cellular_automaton.set_cell_state(2, 1, true);
+	cellular_automaton.set_cell_state(2, 2, true);
+	cellular_automaton.set_cell_state(1, 2, true);
+	cellular_automaton.set_cell_state(0, 2, true);
 	
 		for (const auto& row : cellular_automaton.get_current_state())
 		{
